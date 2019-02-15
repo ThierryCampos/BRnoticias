@@ -24,9 +24,9 @@
 		}
 
 
-		public function inserir($usuario){
+		public function inserirM($usuario){
 
-			$sql = "INSERT INTO `brnoticias`.`tbl_noticias` (titulo, foto, datahora, conteudo, subtitulo) VALUES ('".$usuario->getTitulo()."','".$usuario->getCaminho()."','".$usuario->getDatahora()."','".$usuario->getConteudo()."','".$usuario->getSubtitulo()."')";
+			$sql = "INSERT INTO `brnoticias`.`tbl_noticias` (titulo, foto, datahora, conteudo, subtitulo, id_categoria) VALUES ('".$usuario->getTitulo()."','".$usuario->getCaminho()."','".$usuario->getDatahora()."','".$usuario->getConteudo()."','".$usuario->getSubtitulo()."','".$usuario->getIdcategoria()."')";
 			
 
 			
