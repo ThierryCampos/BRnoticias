@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <?php
+	session_start();
+	header("Content-Type: text/html; charset=ISO-8859-1",true);
+	
+	include ('classes/conexao/conexao.class.php');
+    include ('classes/controle/noticiaCrud.class.php');
+    include ('classes/entidades/usuario.class.php');
 
-error_reporting(E_ALL);
- 
-/* Habilita a exibição de erros */
-ini_set("display_errors", 1);
-
+     $id_categoria = $_GET['id_categoria'];
+	
 ?>
-
+	
 <html lang="pt-br">
 	<head>
 		<meta charset="utf-8">
-		<meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 		<meta name="description" content="Magz is a HTML5 & CSS3 magazine template is based on Bootstrap 3.">
@@ -40,9 +42,16 @@ ini_set("display_errors", 1);
 		<link rel="stylesheet" href="css/style.css">
 		<link rel="stylesheet" href="css/skins/all.css">
 		<link rel="stylesheet" href="css/demo.css">
+
+
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+		<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  
 	</head>
 
-	<body class="skin-orange">
+	<body class="">
 		<header class="primary">
 			<div class="firstbar">
 				<div class="container">
@@ -58,46 +67,16 @@ ini_set("display_errors", 1);
 					</div>
 				</div>
 			</div>
-		
-	
 
-					</div>
-				</div>
-			</div>
-
-
-			
-
-			
-
-			<!-- Start nav -->
-			<nav class="menu">
-				
-				<div class="container">
-					<div class="brand">
-						<a href="index.php">
-							<img src="images/logo01.png" alt="Magz Logo">
-
-						</a>
-
-					</div>
-					<div class="mobile-toggle">
-						<a href="#" data-toggle="menu" data-target="#menu-list"><i class="ion-navicon-round"></i></a>
-					</div>
-					<div class="mobile-toggle">
-						<a href="#" data-toggle="sidebar" data-target="#sidebar"><i class="ion-ios-arrow-left"></i></a>
-					</div>
-					<div id="menu-list">
-						
-						
-						
-					</div>
-				</div>
-			
-			</nav>
-			<!-- End nav -->
 		</header>
 
+		
+			<div class="container">
+
+				<a href="admin.php" class="btn btn-magz">Voltar para pagina do administrador<i class="ion-ios-arrow-thin-right"></i></a>
+				
+			</div>
+		
 
 		
 
@@ -105,60 +84,12 @@ ini_set("display_errors", 1);
 		<section class="login first grey">
 			<div class="container">
 
-				<?php
-                include ('classes/conexao/conexao.class.php');
-                include ('classes/controle/noticiaCrud.class.php');
-                include ('classes/entidades/usuario.class.php');
-
-                if ($_POST) {
-                    if ($_POST['submit']) {
-                        
-                        $usuario = new usuario();
-                        $pessoa  = new noticiaCrud();
-
-                        $titulo       = $_POST['titulo'];
-                        $subtitulo      = $_POST['subtitulo'];
-                        $conteudo       = $_POST['conteudo'];
-                        $datahora        = $_POST['datahora'];
-                        $foto              = $_FILES['foto'];
-
-                        $destino        =   'images/noticias/';
-                        $arquivo        =   basename($foto['name']);
-                        $caminho        =   $destino.$arquivo;
-
-
-                            $usuario->setTitulo($titulo);
-                            $usuario->setSubtitulo($subtitulo);
-                            $usuario->setConteudo($conteudo);
-                            $usuario->setDatahora($datahora);
-                            $usuario->setCaminho($caminho);
-                            move_uploaded_file($foto['tmp_name'], $caminho);
-                           
-                            
-                            $resultado = $pessoa->inserir($usuario);
-                            
-                            if ($resultado == true){
-                                echo " cadastrado com sucesso!";
-                                
-                            } else {
-                                echo "erooooooooooooooooooooooooooo";
-                            }
-
-                    }
-                }
-                
-          
-                ?>
-
-
-
-
-				<a href="tbl.php" class="btn btn-magz"> Noticias <i class="ion-ios-arrow-thin-right"></i></a>
-
-
-			<br><br>
-
 			<div class="comments">
+				<div class="container">
+
+				<a href="admin.php" class="btn btn-magz">Voltar para pagina do administrador<i class="ion-ios-arrow-thin-right"></i></a>
+				
+			</div>
 						
 							
 							<form  action="#" method="POST" enctype="multipart/form-data">
@@ -169,7 +100,6 @@ ini_set("display_errors", 1);
 									<label for="datahora">Data e Hora <span class="required"></span></label>
 									<input type="DateTime-Local" id="datahora" name="datahora" class="form-control">
 								</div>
-								
 								<div class="form-group col-md-4">
 									<label for="foto">Foto</label>
 									<input type="file" id="foto" name="foto" class="form-control">
@@ -189,11 +119,55 @@ ini_set("display_errors", 1);
 								<div class="form-group col-md-12">
 									<button type="submit" class="btn btn-primary" value="submit" name="submit">cadastrar</button>
 								</div>
+								
 							</form>
 			</div>
 
 
-		
+			 <?php
+                
+
+                if ($_POST) {
+                    if ($_POST['submit']) {
+                        
+                        $usuario = new usuario();
+                        $pessoa  = new noticiaCrud();
+
+                        $titulo        = $_POST['titulo'];
+                        $subtitulo    = $_POST['subtitulo'];
+                        $conteudo   = $_POST['conteudo'];
+                        $datahora = $_POST['datahora'];
+                        $id_categoria = $_GET['id_categoria'];
+                        $foto   = $_FILES['foto'];
+						
+						$destino        =   'images/noticias/';
+                        $arquivo        =   basename($foto['name']);
+                        $caminho        =   $destino.$arquivo;
+
+                        $usuario->setTitulo($titulo);
+                        $usuario->setSubtitulo($subtitulo);
+                        $usuario->setConteudo($conteudo);
+                        $usuario->setDatahora($datahora);
+                        $usuario->setCaminho($caminho);
+                        $usuario->setIdcategoria($id_categoria);
+                        move_uploaded_file($foto['tmp_name'], $caminho);
+
+                           
+                            
+                            
+                        $resultado = $pessoa->inserirM($usuario);
+
+                            
+                            if ($resultado == true){
+                                echo "Enviado com sucesso!";
+                               
+                            } else {
+                                echo "Não foi possivel enviar sua mensagem!!!";
+                            }
+                   
+                }
+            }
+                ?>
 
 				<div class="box-wrapper">				
 					<div class="box box-border">

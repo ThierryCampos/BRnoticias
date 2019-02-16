@@ -53,6 +53,7 @@
 							<div class="brand">
 								<a href="index.php">
 									<img src="images/logoteste.png" alt="Magz Logo">
+
 								</a>
 							</div>						
 						</div>
@@ -62,57 +63,8 @@
 			</div>
 
 
-			<?php
 
-				$noticiaCrud  = new noticiaCrud();
-				$pessoa     = new usuario();
-
-				$resultado = $noticiaCrud->exibirMenu();
-
-				if ($resultado == false){
-					echo "Não possui noticias cadastrados no banco de dados!!!";
-				} else {
-
-			?>
-
-			<form action="" method="GET">
-
-			<!-- Start nav -->
-			<nav class="menu">
-				
-				<div class="container">
-					<div class="brand">
-						<a href="index.php">
-							<img src="images/logoteste.png" alt="Magz Logo">
-						</a>
-					</div>
-					<div class="mobile-toggle">
-						<a href="#" data-toggle="menu" data-target="#menu-list"><i class="ion-navicon-round"></i></a>
-					</div>
-					<div class="mobile-toggle">
-						<a href="#" data-toggle="sidebar" data-target="#sidebar"><i class="ion-ios-arrow-left"></i></a>
-					</div>
-					<div id="menu-list">
-						<?php
-					while ($linhas = mysqli_fetch_array($resultado)) {
-				?>
-						
-						<ul class="nav-list">
-							<li class="for-tablet nav-title"><a>Menu</a></li>
-
-							<li><a href="categoria.php?id_categoria=<?php echo $linhas['id_categoria'];
-                            $_SESSION['id_categoria']=$linhas['id_categoria'];?>"><?php echo $linhas['categoria'];?></a></li>
-
-						</ul>
-						<?php
-						 }
-						}
-						 ?>
-					</div>
-				</div>
 			
-			</nav>
-			<!-- End nav -->
 		</header>
 
 		<br><br><br><br><br><br><br><br><br><br>
@@ -150,6 +102,7 @@
 				      <th scope="col">Foto</th>
 				      <th scope="col"></th>
 				      <th scope="col"></th>
+				      <th scope="col"></th>
 				    </tr>
 				  </thead>
 
@@ -172,6 +125,7 @@
 				      <td><a href="altera.php?id_noticia=<?php echo $linhas['id_noticia'];?>" class="btn btn-magz"> Alterar <i class="ion-ios-arrow-thin-right"></i></a></td>
 				      <td><a href="excluir.php?id_noticia=<?php echo $linhas['id_noticia'];
                         $_SESSION['id_noticia']=$linhas['id_noticia'];?>" class="btn btn-magz"> Excluir <i class="ion-ios-arrow-thin-right"></i></a></td>
+                        <td><a href="admin.php" class="btn btn-magz"> Voltar <i class="ion-ios-arrow-thin-right"></i></a></td>
 				    </tr>
 
 				    <?php

@@ -3,6 +3,9 @@
 	session_start();
 	header("Content-Type: text/html; charset=ISO-8859-1",true);
 	
+	include ('classes/conexao/conexao.class.php');
+    include ('classes/controle/noticiaCrud.class.php');
+    include ('classes/entidades/usuario.class.php');
 	
 ?>
 	
@@ -19,7 +22,7 @@
 		<meta property="og:type" content="article" />
 		<meta property="og:url" content="http://github.com/nauvalazhar/Magz" />
 		<meta property="og:image" content="https://raw.githubusercontent.com/nauvalazhar/Magz/master/images/preview.png" />
-		<title>BR Notícias</title>
+		<title>Administrador</title>
 		<!-- Bootstrap -->
 		<link rel="stylesheet" href="scripts/bootstrap/bootstrap.min.css">
 		<!-- IonIcons -->
@@ -46,7 +49,7 @@
   
 	</head>
 
-	<body class="skin-orange">
+	<body class="">
 		<header class="primary">
 			<div class="firstbar">
 				<div class="container">
@@ -58,15 +61,36 @@
 								</a>
 							</div>						
 						</div>
+						<br>
 
 					</div>
+					<div class="headline">
+							
+							<div class="owl-carousel owl-theme" id="headline">							
+								<div class="item">
+									<a ><div class="badge">Dica!</div>Escolha uma das categorias abaixo para fazer sua postagem!!!</a>
+								</div>
+				
+							</div>
+						</div>
 				</div>
+
 			</div>
 
 
-			
+			<?php
 
-			
+				$noticiaCrud  = new noticiaCrud();
+				$pessoa     = new usuario();
+				$resultado = $noticiaCrud->exibirMenu();
+
+				if ($resultado == false){
+					echo "Não possui noticias cadastrados no banco de dados!!!";
+				} else {
+
+			?>
+
+			<form action="" method="GET">
 
 			<!-- Start nav -->
 			<nav class="menu">
@@ -74,10 +98,8 @@
 				<div class="container">
 					<div class="brand">
 						<a href="index.php">
-							<img src="images/logo01.png" alt="Magz Logo">
-
+							<img src="images/logoteste.png" alt="Magz Logo">
 						</a>
-
 					</div>
 					<div class="mobile-toggle">
 						<a href="#" data-toggle="menu" data-target="#menu-list"><i class="ion-navicon-round"></i></a>
@@ -86,9 +108,23 @@
 						<a href="#" data-toggle="sidebar" data-target="#sidebar"><i class="ion-ios-arrow-left"></i></a>
 					</div>
 					<div id="menu-list">
+						<?php
+					while ($linhas = mysqli_fetch_array($resultado)) {
+				?>
 						
-						
-						
+						<ul class="nav-list">
+							<li class="for-tablet nav-title"><a>Menu</a></li>
+
+							<li><a href="cadastra.php?id_categoria=<?php echo $linhas['id_categoria'];
+                            $_SESSION['id_categoria']=$linhas['id_categoria'];?>"><?php echo $linhas['categoria'];?></a></li>
+
+                            
+
+						</ul>
+						<?php
+						 }
+						}
+						 ?>
 					</div>
 				</div>
 			
@@ -96,112 +132,22 @@
 			<!-- End nav -->
 		</header>
 
-
 		
 
-		
+		<br><br>
 		<section class="login first grey">
 			<div class="container">
 
 
 
 
-				<a href="tbl.php" class="btn btn-magz"> Noticias <i class="ion-ios-arrow-thin-right"></i></a>
+				<a href="tbl.php" class="btn btn-magz"> Noticias Cadastradas no Banco de Dados <i class="ion-ios-arrow-thin-right"></i></a>
+				<a href="logout.php" class="btn btn-magz"> Sair <i class="ion-ios-arrow-thin-right"></i></a>
 
 
 			<br><br>
 
-			<div class="comments">
-						
-							
-							<form  action="#" method="POST" enctype="multipart/form-data">
-								<div class="col-md-12">
-									<h3 class="title">Publique as Noticias</h3>
-								</div>
-								<div class="form-group col-md-4">
-									<label for="datahora">Data e Hora <span class="required"></span></label>
-									<input type="DateTime-Local" id="datahora" name="datahora" class="form-control">
-								</div>
-								<div class="form-group col-md-4">
-									<label for="id_categoria">Categoria <span class=""></span></label>
-									<select type="text" id="id_categoria" name="id_categoria" class="form-control">
-									<option></option>
-									</select>	
-								</div>
-								<div class="form-group col-md-4">
-									<label for="foto">Foto</label>
-									<input type="file" id="foto" name="foto" class="form-control">
-								</div>
-								<div class="form-group col-md-12">
-									<label for="titulo">Titulo <span class="required"></span></label>
-									<textarea class="form-control" name="titulo" id="titulo" placeholder="Digite o titulo ..."></textarea>
-								</div>
-								<div class="form-group col-md-12">
-									<label for="subtitulo">Subtitulo <span class="required"></span></label>
-									<textarea class="form-control" name="subtitulo" id="subtitulo" placeholder="Digite o subtitulo ..."></textarea>
-								</div>
-								<div class="form-group col-md-12">
-									<label for="conteudo">Conteudo <span class="required"></span></label>
-									<textarea class="form-control" name="conteudo" id="conteudo" placeholder="Digite o conteudo ..."></textarea>
-								</div>
-								<div class="form-group col-md-12">
-									<button type="submit" class="btn btn-primary" value="submit" name="submit">cadastrar</button>
-								</div>
-							</form>
-			</div>
-
-
-			 <?php
-                include ('classes/conexao/conexao.class.php');
-                include ('classes/controle/noticiaCrud.class.php');
-                include ('classes/entidades/usuario.class.php');
-
-                if ($_POST) {
-                    if ($_POST['submit']) {
-                        
-                        $usuario = new usuario();
-                        $pessoa  = new noticiaCrud();
-
-                        $titulo        = $_POST['titulo'];
-                        $subtitulo    = $_POST['subtitulo'];
-                        $conteudo   = $_POST['conteudo'];
-                        $datahora = $_POST['datahora'];
-                        $foto   = $_FILES['foto'];
-						
-						$destino        =   'images/noticias/';
-                        $arquivo        =   basename($foto['name']);
-                        $caminho        =   $destino.$arquivo;
-
-                        $usuario->setTitulo($titulo);
-                        $usuario->setSubtitulo($subtitulo);
-                        $usuario->setConteudo($conteudo);
-                        $usuario->setDatahora($datahora);
-                        $usuario->setCaminho($caminho);
-                        move_uploaded_file($foto['tmp_name'], $caminho);
-
-                           
-                            
-                            
-                        $resultado = $pessoa->inserirM($usuario);
-
-                            
-                            if ($resultado == true){
-                                echo "Enviado com sucesso!";
-                                header("Refresh: 2; url = admin.php");
-                            } else {
-                                echo "Não foi possivel enviar sua mensagem!!!";
-                            }
-                   
-                }
-            }
-                ?>
-
-				<div class="box-wrapper">				
-					<div class="box box-border">
-						 
-						
-					</div>
-				</div>
+		
 			</div>
 		</section>
 		<br><br><br><br>
