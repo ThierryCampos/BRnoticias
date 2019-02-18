@@ -68,11 +68,9 @@
 
 				$noticiaCrud  = new noticiaCrud();
 				$pessoa     = new usuario();
-				$resultado = $noticiaCrud->exibirMenu();
+				
 
-				if ($resultado == false){
-					echo "Não possui noticias cadastrados no banco de dados!!!";
-				} else {
+				
 
 			?>
 
@@ -94,21 +92,23 @@
 						<a href="#" data-toggle="sidebar" data-target="#sidebar"><i class="ion-ios-arrow-left"></i></a>
 					</div>
 					<div id="menu-list">
-						<?php
-					while ($linhas = mysqli_fetch_array($resultado)) {
-				?>
+						
 						
 						<ul class="nav-list">
-							<li class="for-tablet nav-title"><a>Menu</a></li>
+								<li><a href="index.php">Home</a></li>
 
-							<li><a href="categoria.php?id_categoria=<?php echo $linhas['id_categoria'];
-                            $_SESSION['id_categoria']=$linhas['id_categoria'];?>"><?php echo $linhas['categoria'];?></a></li>
+							<li><a href="categoria.php?id_categoria=5">Brasil</a></li>
+							<li><a href="categoria.php?id_categoria=12">Clima</a></li>
+							<li><a href="categoria.php?id_categoria=1">Esporte</a></li>
+							<li><a href="categoria.php?id_categoria=3">Cultura</a></li>
+							<li><a href="categoria.php?id_categoria=6">Mundo</a></li>
+							<li><a href="categoria.php?id_categoria=7">Politica</a></li>
+							<li><a href="categoria.php?id_categoria=8">Emprego</a></li>
+							<li><a href="categoria.php?id_categoria=9">Educacao</a></li>
+							<li><a href="categoria.php?id_categoria=10">Economia</a></li>
 
 						</ul>
-						<?php
-						 }
-						}
-						 ?>
+						
 					</div>
 				</div>
 			

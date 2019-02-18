@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-
 <?php
+
+
+
 	session_start();
 	header("Content-Type: text/html; charset=ISO-8859-1",true);
 
@@ -8,13 +10,14 @@
 	include ('classes/controle/noticiaCrud.class.php');
 	include ('classes/entidades/usuario.class.php');
 
-	$id_noticia = $_GET['id_noticia'];
+	 $id_posto = $_SESSION['id_posto'];
 
+	
+	
 ?>
-<html lang="pt-br">
+<html>
 	<head>
 		<meta charset="utf-8">
-		<meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 		<meta name="description" content="Magz is a HTML5 & CSS3 magazine template is based on Bootstrap 3.">
@@ -45,7 +48,7 @@
 		<link rel="stylesheet" href="css/demo.css">
 	</head>
 
-	<body class="skin-orange">
+	<body>
 		<header class="primary">
 			<div class="firstbar">
 				<div class="container">
@@ -68,7 +71,6 @@
 				$noticiaCrud  = new noticiaCrud();
 				$pessoa     = new usuario();
 				
-
 			?>
 
 			<form action="" method="GET">
@@ -103,6 +105,8 @@
 							<li><a href="categoria.php?id_categoria=8">Emprego</a></li>
 							<li><a href="categoria.php?id_categoria=9">Educacao</a></li>
 							<li><a href="categoria.php?id_categoria=10">Economia</a></li>
+							<li><a href="postos.php">Combustivel</a></li>
+                           
 
 						</ul>
 						
@@ -113,12 +117,112 @@
 			<!-- End nav -->
 		</header>
 
+		<section class="category">
+		   <div class="container">
+		    <div class="row">
+		      <div class="col-md-8 text-left">
+		        <div class="row">
+		          <div class="col-md-12">        
+		            <ol class="breadcrumb">
+		              <li><a href="index.php">Home</a></li>
+		            </ol>
+		            
+		          </div>
+		        </div>
+		        <div class="line"></div>
+		        <div class="row">
 
-		<section class="single">
-			<div class="container">
-				<div class="row">
-					<div class="col-md-4 sidebar" id="sidebar">
-						<aside>
+
+
+		<?php
+					
+
+			$noticiaCrud  = new noticiaCrud();
+			$pessoa     = new usuario();
+
+			$resultado = $noticiaCrud->exibirPostos($id_posto);
+
+
+			if ($resultado == false){
+			echo "Não possui postos cadastrados no banco de dados!!!";
+			
+			} else {
+
+		?>
+
+		<form action="" method="GET">
+
+
+		          <article class="col-md-12 article-list">
+		            <div class="inner">
+						<?php
+								while ($linhas = mysqli_fetch_array($resultado)) {
+						?>
+		              <figure>
+			              <a href="#">
+			                <img src="<?php echo $linhas['foto_posto'];?>">
+		                </a>
+		              </figure>
+		              <div class="details">
+		                
+		                <h1><a><?php echo $linhas['nome_posto'];?></a></h1>
+		                 <p>
+		                  <?php echo $linhas['endereco'];?>
+		                </p>
+		                <strong><p>Gasolina (R$) :</strong>
+		                  <?php echo $linhas['gasolina'];?>
+		                </p>
+		                <strong><p>Alcool (R$) :</strong>
+		                  <?php echo $linhas['alcool'];?>
+		                </p>
+		                <strong><p>Diesel (R$) :</strong>
+		                  <?php echo $linhas['diesel'];?>
+		                </p>
+		                
+		              </div>
+		              <?php
+		              	}
+		              ?>
+		            </div>
+		          </article>
+
+
+			<?php
+				if ($_GET){
+					if(isset($_GET['id_posto'])){
+						$id_posto = $_GET['id_posto'];
+						$resultadoConsulta = $noticiaCrud->consultarCodigoPosto($id_posto);
+							while ($linhas = mysqli_fetch_array($resultadoConsulta)){ 
+
+
+						$id_posto  = $linhas['id_posto'];
+						$nome_posto    = $linhas['nome_posto'];
+						$alcool   = $linhas['alcool'];
+						$gasolina         = $linhas['gasolina'];
+						$diesel     = $linhas['diesel'];
+						$foto_posto = $linhas['foto_posto'];
+						$endereco = $linhas['endereco'];
+
+
+				}
+			?>
+
+			<?php
+				
+				
+			}
+			}
+
+
+			}
+
+			?>
+		          
+
+		        </div>
+		      </div>
+		      <div class="col-md-4 sidebar">
+		        <aside>
 							<a href="varzea.php">
 							<div class="aside-body">
 								<figure class="ads" href="varzea.php">
@@ -207,168 +311,10 @@
 								
 							</div>
 						</aside>
-						
-					</div>
-
-
-
-
-
-
-					<?php
-
-
-					$noticiaCrud  = new noticiaCrud();
-					$pessoa     = new usuario();
-
-					$resultado = $noticiaCrud->exibirSingle($id_noticia);
-
-
-					if ($resultado == false){
-					echo "Não possui noticias cadastrados no banco de dados!!!";
-
-					} else {
-
-					?>
-
-					<form action="" method="GET">
-
-
-					<div class="col-md-8">
-						<ol class="breadcrumb">
-						  <li><a href="#">Home</a></li>
-						  <li class="active">Film</li>
-						</ol>
-						<article class="article main-article">
-
-							<?php
-								while ($linhas = mysqli_fetch_array($resultado)) {
-							?>
-
-							<header>
-								<h1><?php echo $linhas['titulo'];?></h1>
-								<ul class="details">
-									<li><?php echo $linhas['datahora'];?></li>
-									<li><a></a></li>
-									<li>By <a href="#">John Doe</a></li>
-								</ul>
-							</header>
-							<div class="main">
-								<p><?php echo $linhas['subtitulo'];?></p>
-								<div class="featured">
-									<figure>
-										<img src="<?php echo $linhas['foto'];?>">
-										<figcaption>Image by pexels.com</figcaption>
-									</figure>
-								</div>
-
-								<p><?php echo $linhas['conteudo'];?></p>
-								
-							</div>
-							<?php }?>
-						</article>
-
-			<?php
-					if ($_GET){
-						if(isset($_GET['id_noticia'])){
-							$id_noticia = $_GET['id_noticia'];
-							$resultadoConsulta = $noticiaCrud->consultarCodigoNoticia($id_noticia);
-								while ($linhas = mysqli_fetch_array($resultadoConsulta)){ 
-
-
-							
-							$id_noticia    = $linhas['id_noticia'];
-							$titulo   = $linhas['titulo'];
-							$subtitulo         = $linhas['subtitulo'];
-							$foto     = $linhas['foto'];
-							$datahora = $linhas['datahora'];
-
-
-				}
-			?>
-
-			<?php
-				
-				
-			}
-			}
-
-
-			}
-
-			?>
-
-
-
-
-
-						<div class="sharing">
-						<div class="title"><i class="ion-android-share-alt"></i> Sharing is caring</div>
-							<ul class="social">
-								<li>
-									<a href="#" class="facebook">
-										<i class="ion-social-facebook"></i> Facebook
-									</a>
-								</li>
-								<li>
-									<a href="#" class="twitter">
-										<i class="ion-social-twitter"></i> Twitter
-									</a>
-								</li>
-								<li>
-									<a href="#" class="googleplus">
-										<i class="ion-social-googleplus"></i> Google+
-									</a>
-								</li>
-								<li>
-									<a href="#" class="linkedin">
-										<i class="ion-social-linkedin"></i> Linkedin
-									</a>
-								</li>
-								<li>
-									<a href="#" class="skype">
-										<i class="ion-ios-email-outline"></i> Email
-									</a>
-								</li>
-								<li class="count">
-									20
-									<div>Shares</div>
-								</li>
-							</ul>
-						</div>
-						
-						
-						
-					
-						
-						<div class="comments">
-						
-							
-							<form class="row">
-								<div class="col-md-12">
-									<h3 class="title">Leave Your Response</h3>
-								</div>
-								<div class="form-group col-md-4">
-									<label for="name">Name <span class="required"></span></label>
-									<input type="text" id="name" name="" class="form-control">
-								</div>
-								<div class="form-group col-md-4">
-									<label for="email">Email <span class="required"></span></label>
-									<input type="email" id="email" name="" class="form-control">
-								</div>
-								<div class="form-group col-md-4">
-									<label for="website">Website</label>
-									<input type="url" id="website" name="" class="form-control">
-								</div>
-								<div class="form-group col-md-12">
-									<label for="message">Response <span class="required"></span></label>
-									<textarea class="form-control" name="message" placeholder="Write your response ..."></textarea>
-								</div>
-								<div class="form-group col-md-12">
-									<button class="btn btn-primary">Send Response</button>
-								</div>
-							</form>
-						</div>
+		        
+		      </div>
+		    </div>
+		  </div>
 		</section>
 
 		<!-- Start footer -->

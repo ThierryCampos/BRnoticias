@@ -142,6 +142,8 @@
 
 
 				<a href="tbl.php" class="btn btn-magz"> Noticias Cadastradas no Banco de Dados <i class="ion-ios-arrow-thin-right"></i></a>
+				<a href="cadastra_postos.php" class="btn btn-magz"> Cadastrar Postos de Gasolina <i class="ion-ios-arrow-thin-right"></i></a>
+				<a href="tbl_posto.php" class="btn btn-magz"> Postos de Gasolina <i class="ion-ios-arrow-thin-right"></i></a>
 				<a href="logout.php" class="btn btn-magz"> Sair <i class="ion-ios-arrow-thin-right"></i></a>
 
 

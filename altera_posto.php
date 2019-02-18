@@ -24,7 +24,7 @@
 		<meta property="og:type" content="article" />
 		<meta property="og:url" content="http://github.com/nauvalazhar/Magz" />
 		<meta property="og:image" content="https://raw.githubusercontent.com/nauvalazhar/Magz/master/images/preview.png" />
-		<title>BR Noticias</title>
+		<title>Altera Posto</title>
 		<!-- Bootstrap -->
 		<link rel="stylesheet" href="scripts/bootstrap/bootstrap.min.css">
 		<!-- IonIcons -->
@@ -52,11 +52,11 @@
             $noticiaCrud  = new noticiaCrud();
             $pessoa     = new usuario();
             
-            $resultado = $noticiaCrud->exibirTodasNoticiasCadastradas();
+            $resultado = $noticiaCrud->exibirTodosPostos();
             
 
             if ($resultado == false){
-                echo "Não possui usuários cadastrados no banco de dados!!!";
+                echo "Não possui postos cadastrados no banco de dados!!!";
             } else {
 
             ?>
@@ -74,20 +74,19 @@
 
              <?php
             if ($_GET){
-                if(isset($_GET['id_noticia'])){
-                    $id_noticia = $_GET['id_noticia'];
-                    $resultadoConsulta = $noticiaCrud->consultarCodigoN($id_noticia);
+                if(isset($_GET['id_posto'])){
+                    $id_posto = $_GET['id_posto'];
+                    $resultadoConsulta = $noticiaCrud->consultarCodigoPostoA($id_posto);
 
                         while ($linhas = mysqli_fetch_array($resultadoConsulta)){  
                         
-                            $id_noticia     = $linhas['id_noticia'];
-                            $titulo            = $linhas['titulo'];
-                            $subtitulo            = $linhas['subtitulo'];
-                            $conteudo     = $linhas['conteudo'];
-                            $datahora       = $linhas['datahora'];
-                            $id_categoria = $linhas['id_categoria'];
-                            $foto      = $linhas['foto'];
-                              
+                            
+                        $nome_posto        = $linhas['nome_posto'];
+                        $endereco    = $linhas['endereco'];
+                        $gasolina   = $linhas['gasolina'];
+                        $alcool = $linhas['alcool'];
+                        $diesel = $linhas['diesel'];
+                        $foto_posto   = $linhas['foto_posto'];                              
                     }
                     ?>
 
@@ -101,34 +100,32 @@
 									<h3 class="title">Alterar Dados</h3>
 								</div>
 								<div class="form-group col-md-4">
-									<label >Data e Hora </label>
-									<input type="text" name="datahora" class="form-control" value="<?php echo $datahora;?>">
+									<label > Nome </label>
+									<input type="text" name="nome_posto" class="form-control" value="<?php echo $nome_posto;?>">
 								</div>
 								<div class="form-group col-md-4">
-									<label>Categoria </label>
-									<input type="text" name="id_categoria" class="form-control" value="<?php echo $id_categoria;?>">
-									
-										
+									<label> Endereco </label>
+									<input type="text" name="endereco" class="form-control" value="<?php echo $endereco;?>">		
 								</div>
 								<div class="form-group col-md-4">
 									<label >Foto</label>
-									<input type="text" name="foto" class="form-control" value="<?php echo $foto;?>">
+									<input type="text" name="foto_posto" class="form-control" value="<?php echo $foto_posto;?>">
 								</div>
 								<div class="form-group col-md-12">
-									<label >Titulo </label>
-									<input type="text" class="form-control" name="titulo" value="<?php echo $titulo;?>"></textarea>
+									<label >Gasolina </label>
+									<input type="text" class="form-control" name="gasolina" value="<?php echo $gasolina;?>"></textarea>
 								</div>
 								<div class="form-group col-md-12">
-									<label >Subtitulo</span></label>
-									<input type="text" class="form-control" name="subtitulo" id="subtitulo" value="<?php echo $subtitulo;?>"></textarea>
+									<label >Alcool</span></label>
+									<input type="text" class="form-control" name="alcool" id="subtitulo" value="<?php echo $alcool;?>"></textarea>
 								</div>
 								<div class="form-group col-md-12">
-									<label>Conteudo</label>
-									<input type="textarea" class="form-control" name="conteudo" value="<?php echo $conteudo;?>"></textarea>
+									<label>Diesel</label>
+									<input type="text" class="form-control" name="diesel" value="<?php echo $diesel;?>"></textarea>
 								</div>
 								<div class="form-group col-md-12">
 									<button type="submit" class="btn btn-primary" value="alterar" name="alterar">Alterar</button>
-									<a class="btn btn-primary" href="tbl.php">voltar</a>
+									<a class="btn btn-primary" href="tbl_posto.php">voltar</a>
 								</div>
 							</form>
 			</div>
@@ -145,27 +142,27 @@
 	
 
 		        <?php
-            $_SESSION['id_noticia'] = $id_noticia;
+            $_SESSION['id_posto'] = $id_posto;
                 }
             }
         
             if ($_POST){
-                $id_noticia = $_SESSION['id_noticia'];
-                $titulo = $_POST['titulo'];
-                $subtitulo = $_POST['subtitulo'];
-                $conteudo = $_POST['conteudo'];
-                $datahora = $_POST['datahora'];
-                $id_categoria = $_POST['id_categoria'];
-                $foto = $_POST['foto'];
+                $id_posto = $_SESSION['id_posto'];
+                $nome_posto = $_POST['nome_posto'];
+                $endereco = $_POST['endereco'];
+                $gasolina = $_POST['gasolina'];
+                $alcool = $_POST['alcool'];
+                $diesel = $_POST['diesel'];
+                $foto_posto = $_POST['foto_posto'];
                 
                 
                 if ($_POST['alterar']){
-                    $resultadoAlteracao = $noticiaCrud->alterar($id_noticia,$titulo,$subtitulo,$conteudo,$datahora,$id_categoria,$foto);
+                    $resultadoAlteracao = $noticiaCrud->alterarposto($id_posto,$nome_posto,$endereco,$gasolina,$alcool,$diesel,$foto_posto);
                     if ($resultadoAlteracao == true){
                     	?>
                        <script>alert("Alterado com sucesso!!!");</script> 
                        <?php
-                        echo '<script>location.href="tbl.php";</script>';
+                        echo '<script>location.href="tbl_posto.php";</script>';
                     } else {
                          ?>
                 	<script>alert("Nao alterado!!!");</script>

@@ -7,7 +7,7 @@
     include ('classes/controle/noticiaCrud.class.php');
     include ('classes/entidades/usuario.class.php');
 
-     $id_categoria = $_GET['id_categoria'];
+    
 	
 ?>
 	
@@ -24,7 +24,7 @@
 		<meta property="og:type" content="article" />
 		<meta property="og:url" content="http://github.com/nauvalazhar/Magz" />
 		<meta property="og:image" content="https://raw.githubusercontent.com/nauvalazhar/Magz/master/images/preview.png" />
-		<title>BR Noticias</title>
+		<title>Cadastra Postos</title>
 		<!-- Bootstrap -->
 		<link rel="stylesheet" href="scripts/bootstrap/bootstrap.min.css">
 		<!-- IonIcons -->
@@ -94,27 +94,32 @@
 							
 							<form  action="#" method="POST" enctype="multipart/form-data">
 								<div class="col-md-12">
-									<h3 class="title">Publique as Noticias</h3>
+									<h3 class="title">Cadastre Novos Postos</h3>
 								</div>
 								<div class="form-group col-md-4">
-									<label for="datahora">Data e Hora <span class="required"></span></label>
-									<input type="DateTime-Local" id="datahora" name="datahora" class="form-control">
+									<label for="gasolina">Valor da Gasolina <span class="required"></span></label>
+									<input type="text" id="gasolina" name="gasolina" class="form-control">
 								</div>
 								<div class="form-group col-md-4">
-									<label for="foto">Foto</label>
-									<input type="file" id="foto" name="foto" class="form-control">
+									<label for="alcool">Valor do Alcool <span class="required"></span></label>
+									<input type="text" id="alcool" name="alcool" class="form-control">
+								</div>
+								<div class="form-group col-md-4">
+									<label for="diesel">Valor do Diesel <span class="required"></span></label>
+									<input type="text" id="diesel" name="diesel" class="form-control">
+								</div>
+								<div class="form-group col-md-4">
+									<label for="foto_posto">Foto</label>
+									<input type="file" id="foto_posto" name="foto_posto" class="form-control">
+								</div>
+								
+								<div class="form-group col-md-12">
+									<label for="nome_posto">Nome do Posto <span class="required"></span></label>
+									<textarea class="form-control" name="nome_posto" id="nome_posto" placeholder="Digite o nome do posto ..."></textarea>
 								</div>
 								<div class="form-group col-md-12">
-									<label for="titulo">Titulo <span class="required"></span></label>
-									<textarea class="form-control" name="titulo" id="titulo" placeholder="Digite o titulo ..."></textarea>
-								</div>
-								<div class="form-group col-md-12">
-									<label for="subtitulo">Subtitulo <span class="required"></span></label>
-									<textarea class="form-control" name="subtitulo" id="subtitulo" placeholder="Digite o subtitulo ..."></textarea>
-								</div>
-								<div class="form-group col-md-12">
-									<label for="conteudo">Conteudo <span class="required"></span></label>
-									<textarea class="form-control" name="conteudo" id="conteudo" placeholder="Digite o conteudo ..."></textarea>
+									<label for="endereco">Endereco <span class="required"></span></label>
+									<textarea class="form-control" name="endereco" id="endereco" placeholder="endereco ..."></textarea>
 								</div>
 								<div class="form-group col-md-12">
 									<button type="submit" class="btn btn-primary" value="submit" name="submit">cadastrar</button>
@@ -133,43 +138,43 @@
                         $usuario = new usuario();
                         $pessoa  = new noticiaCrud();
 
-                        $titulo        = $_POST['titulo'];
-                        $subtitulo    = $_POST['subtitulo'];
-                        $conteudo   = $_POST['conteudo'];
-                        $datahora = $_POST['datahora'];
-                        $id_categoria = $_GET['id_categoria'];
-                        $foto   = $_FILES['foto'];
+                        $nome_posto        = $_POST['nome_posto'];
+                        $endereco    = $_POST['endereco'];
+                        $gasolina   = $_POST['gasolina'];
+                        $alcool = $_POST['alcool'];
+                        $diesel = $_POST['diesel'];
+                        $foto_posto   = $_FILES['foto_posto'];
 						
-						$destino        =   'images/noticias/';
-                        $arquivo        =   basename($foto['name']);
-                        $caminho        =   $destino.$arquivo;
+						$destino_posto        =   'images/postos/';
+                        $arquivo_posto        =   basename($foto_posto['name']);
+                        $caminho_posto        =   $destino_posto.$arquivo_posto;
 
-                        $usuario->setTitulo($titulo);
-                        $usuario->setSubtitulo($subtitulo);
-                        $usuario->setConteudo($conteudo);
-                        $usuario->setDatahora($datahora);
-                        $usuario->setCaminho($caminho);
-                        $usuario->setIdcategoria($id_categoria);
-                        move_uploaded_file($foto['tmp_name'], $caminho);
+                        $usuario->setNomeposto($nome_posto);
+                        $usuario->setEndereco($endereco);
+                        $usuario->setGasolina($gasolina);
+                        $usuario->setAlcool($alcool);
+                        $usuario->setDiesel($diesel);
+                        $usuario->setCaminhoPosto($caminho_posto);
+                        move_uploaded_file($foto_posto['tmp_name'], $caminho_posto);
 
                            
                             
                             
-                        $resultado = $pessoa->inserirM($usuario);
+                        $resultado = $pessoa->inserirP($usuario);
 
                             
-                             if ($resultado == true){
+            if ($resultado == true){
                ?>
-                <script>alert("Noticia publicada com sucesso!!!");</script>
+                <script>alert("Posto cadastrado com sucesso!!!");</script>
                 <?php
-                echo '<script>location.href="cadastra.php";</script>';
+                echo '<script>location.href="cadastra_postos.php";</script>';
             } else {
                 ?>
-                <script>alert("Noticia nao publicada!!!");</script>
+                <script>alert("Posto nao cadastrado com sucesso!!!");</script>
                 <?php
-                echo '<script>location.href="cadastra.php";</script>';
+                echo '<script>location.href="cadastra_postos.php";</script>';
             }
-                   
+				                   
                 }
             }
                 ?>
